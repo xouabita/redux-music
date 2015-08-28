@@ -1,6 +1,6 @@
 module.exports =
 
-  entry: "./index.coffee"
+  entry: "./src/index.coffee"
   output:
     path: __dirname
     filename: "index.js"

@@ -1,4 +1,5 @@
-C = require './constants'
+C      = require './constants'
+assign = require 'object-assign'
 
 _first_state =
   playlist: [] # Queue of url
@@ -28,3 +29,5 @@ radio = (state = _first_state, action) ->
       if state.index > 0 then state.index--
 
   return state
+
+module.exports = radio
