@@ -72,12 +72,19 @@ class YoutubeAdapter
   play: (url, start_time = 0, stop_time) => co =>
     if not @_ready then yield waitReady()
 
+    if not url
+      @_player.playVideo()
+      return
+
     id = youTubeGetID url
 
     @_player.loadVideoById
       videoId: id
       startSeconds: start_time
       endSeconds: stop_time if stop_time?
+
+  pause: =>
+    @_player.pauseVideo()
 
 
 module.exports = global.YoutubeAdapter = YoutubeAdapter
