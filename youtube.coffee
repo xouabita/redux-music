@@ -3,7 +3,7 @@ co = require "co"
 _api_iframe_init = no
 _player_init     = no
 
-player = null
+_id              = 0
 
 waitForApiInit = -> new Promise (resolve, reject) ->
   rec = ->
@@ -11,38 +11,73 @@ waitForApiInit = -> new Promise (resolve, reject) ->
     else setTimeout rec, 10
   rec()
 
-waitForPlayerInit = ->
-
 global.onYouTubeIframeAPIReady = ->
   _api_iframe_init = yes
 
-createPlayer = -> new Promise (resolve, reject) ->
-  new YT.Player 'player',
-    videoId: 'YqeW9_5kURI'
+createPlayer = (player_id) -> new Promise (resolve, reject) ->
+  new YT.Player player_id,
     height: 0
     width: 0
     events:
       onReady: (e) ->
         resolve e.target
 
-module.exports.initPlayer = initPlayer = -> co ->
-  throw Error "Need to be in browser" if not global.document
+youTubeGetID = (url) ->
+  ID = ''
+  url = url.replace(/(>|<)/gi,'').split /(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/
+  if url[2] isnt undefined
+    ID = url[2].split /[^0-9a-z_\-]/i
+    ID = ID[0]
+  else
+    ID = url
+  return ID
 
-  # place the iframe
-  player = document.createElement 'div'
-  player.id = "player"
-  player.style.position = 'fixed'
-  player.style.top = '-9999px'
+class YoutubeAdapter
 
-  document.body.appendChild player
+  constructor: ->
 
-  # place the script
-  tag = document.createElement 'script'
-  tag.src = "https://www.youtube.com/iframe_api"
-  document.body.appendChild tag
+    # Detect if not in browser
+    throw Error "Need to be in browser" if not global.document
 
-  yield waitForApiInit()
-  player = yield createPlayer()
-  player_tag = document.getElementById 'player'
-  player_tag.style.display = 'none'
-  player.playVideo()
+    # Init private variables
+    @_player    = null
+    @_ready     = no
+    @_player_id = "yt_player_#{++_id}"
+
+    # place the iframe
+    player = document.createElement 'div'
+    player.id = @_player_id
+    player.style.position = 'fixed'
+    player.style.top = '-9999px'
+    document.body.appendChild player
+
+    # place the script
+    tag = document.createElement 'script'
+    tag.src = "https://www.youtube.com/iframe_api"
+    document.body.appendChild tag
+
+  init: => co =>
+    yield waitForApiInit()
+    @_player = yield createPlayer @_player_id
+    @_ready  = yes
+
+  isReady: -> return @_ready
+
+  waitReady: => new Promise (res, rej) =>
+    rec = =>
+      if @_ready then res()
+      else setTimeout rec
+    rec()
+
+  play: (url, start_time = 0, stop_time) => co =>
+    if not @_ready then yield waitReady()
+
+    id = youTubeGetID url
+
+    @_player.loadVideoById
+      videoId: id
+      startSeconds: start_time
+      endSeconds: stop_time if stop_time?
+
+
+module.exports = global.YoutubeAdapter = YoutubeAdapter
