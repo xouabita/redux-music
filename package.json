@@ -13,6 +13,10 @@
     "coffee-loader": "^0.7.2",
     "coffee-script": "^1.9.3",
     "es6-promise": "^3.0.2",
+    "keymirror": "^0.1.1",
+    "object-assign": "^4.0.1",
+    "redux": "^1.0.1",
+    "redux-thunk": "^0.1.0",
     "regenerator": "^0.8.36",
     "regenerator-loader": "^2.0.0",
     "webpack": "^1.12.0"
