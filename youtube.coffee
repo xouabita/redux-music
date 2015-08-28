@@ -32,7 +32,7 @@ youTubeGetID = (url) ->
     ID = url
   return ID
 
-class YoutubeAdapter
+class YoutubeHandler
 
   constructor: ->
 
@@ -87,4 +87,4 @@ class YoutubeAdapter
     @_player.pauseVideo()
 
 
-module.exports = global.YoutubeAdapter = YoutubeAdapter
+module.exports = YoutubeHandler
