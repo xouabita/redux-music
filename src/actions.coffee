@@ -18,3 +18,7 @@ module.exports.play = -> (dispatch, getState) -> co ->
 module.exports.pause = -> (dispatch) ->
   _yt.pause()
   dispatch type: C.PAUSE
+
+module.exports.stop = -> (dispatch) ->
+  _yt.pause()
+  dispatch type: C.STOP

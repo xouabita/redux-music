@@ -17,10 +17,16 @@ radio = (state = _first_state, action) ->
       state.playlist.push action.payload
       if state.index is -1 then state.index++
 
-    when C.PLAY then state.playing = yes
+    when C.PLAY
+      state.paused  = null
+      state.playing = yes
 
     when C.PAUSE
       state.paused  = state.playlist[state.index]
+      state.playing = no
+
+    when C.STOP
+      state.paused  = null
       state.playing = no
 
     when C.NEXT
