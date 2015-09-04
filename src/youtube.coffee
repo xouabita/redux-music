@@ -70,7 +70,8 @@ class YoutubeHandler
     rec()
 
   play: (url, start_time = 0, stop_time) => co =>
-    if not @_ready then yield waitReady()
+
+    yield @waitReady() if not @_ready
 
     if not url
       @_player.playVideo()
