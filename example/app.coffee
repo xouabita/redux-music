@@ -38,6 +38,30 @@ class StopButton extends Component
   render: ->
     <button onClick={ @props.stop }>stop</button>
 
+class PlaylistInput extends Component
+
+  @propTypes:
+    addSong: T.func
+
+  constructor: (props) ->
+    super props
+    @state = value: ''
+
+  render: ->
+    <div className="add-song">
+      <input value={@state.value} onChange={@_onChange} onKeyDown={@_onKeyDown} />
+      <button onClick={@_submit}>Add Song</button>
+    </div>
+
+  _onChange: (e) => @setState value: e.target.value
+
+  _submit: =>
+    @props.addSong @state.value
+    @setState value: ''
+
+  _onKeyDown: (e) => if e.key is 'Enter' then @_submit()
+
+
 class App extends Component
 
   @propTypes:
@@ -46,10 +70,12 @@ class App extends Component
 
   render: ->
     { playing } = @props.state
-    { play, pause, stop } = @props.actions
+    { play, pause, stop, addSong } = @props.actions
     <div>
       <PlayButton playing={playing} pause={pause} play={play} />
       <StopButton stop={stop} />
+      <br/>
+      <PlaylistInput addSong={addSong} />
     </div>
 
 { Provider, connect } = require 'react-redux'
@@ -60,8 +86,6 @@ mapDispatchToProps = (dispatch) ->
   actions: bindActionCreators actions, dispatch
 
 AppContainer = connect(mapStateToProps, mapDispatchToProps)(App)
-
-store.dispatch actions.addSong "https://www.youtube.com/watch?v=YqeW9_5kURI"
 
 React.render(
   <Provider store={store}>
