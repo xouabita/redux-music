@@ -13,3 +13,4 @@ createStoreWithMiddlewares = applyMiddleware(thunk, logger) createStore
 store = createStoreWithMiddlewares reducer
 
 store.dispatch actions.addSong("https://www.youtube.com/watch?v=YqeW9_5kURI")
+store.dispatch actions.play()
