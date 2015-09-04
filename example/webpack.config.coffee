@@ -1,6 +1,10 @@
 module.exports =
 
-  entry: "./app.coffee"
+  entry:
+    app: [
+      "webpack/hot/dev-server"
+      "./app.coffee"
+    ]
   output:
     path: __dirname
     filename: "app.js"
@@ -10,6 +14,6 @@ module.exports =
   module:
     loaders: [
       test: /\.coffee$/
-      loaders: ["regenerator", "coffee", "cjsx"]
+      loaders: ["react-hot", "regenerator", "coffee", "cjsx"]
       exclude: "node_modules"
     ]

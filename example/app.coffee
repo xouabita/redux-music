@@ -61,6 +61,28 @@ class PlaylistInput extends Component
 
   _onKeyDown: (e) => if e.key is 'Enter' then @_submit()
 
+class Playlist extends Component
+
+  @propTypes:
+    state: T.object
+
+  render: ->
+    { state } = @props
+    <ul>
+      {
+        if state.playlist.length is 0 then <i>No songs :'(</i>
+        else
+          state.playlist.map (music, i) ->
+            if state.paused is music
+              style = color: 'orange'
+            else if state.playlist[state.index] is music and state.playing
+              style = color: 'green'
+            else
+              style = color: 'black'
+            <li style={style} key={i}>{music}</li>
+      }
+    </ul>
+
 
 class App extends Component
 
@@ -69,13 +91,14 @@ class App extends Component
     state: T.object
 
   render: ->
-    { playing } = @props.state
+    { playing, playlist, paused } = @props.state
     { play, pause, stop, addSong } = @props.actions
     <div>
       <PlayButton playing={playing} pause={pause} play={play} />
       <StopButton stop={stop} />
       <br/>
       <PlaylistInput addSong={addSong} />
+      <Playlist state={@props.state} />
     </div>
 
 { Provider, connect } = require 'react-redux'

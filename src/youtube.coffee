@@ -88,4 +88,4 @@ class YoutubeHandler
     @_player.pauseVideo()
 
 
-module.exports = YoutubeHandler
+module.exports = global.YoutubeHandler = YoutubeHandler

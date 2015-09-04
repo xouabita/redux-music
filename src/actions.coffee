@@ -6,8 +6,10 @@ _yt = new YoutubeHandler()
 _yt.init()
 
 module.exports.addSong = (url) ->
-  type: C.ADD_SONG
-  payload: url
+  if url.match /watch\?v=([a-zA-Z0-9\-_]+)/
+    type: C.ADD_SONG
+    payload: url
+  else throw Error 'invalid youtube url'
 
 module.exports.play = -> (dispatch, getState) -> co ->
   { playlist, index, paused } = getState()
