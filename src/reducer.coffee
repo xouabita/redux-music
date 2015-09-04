@@ -5,6 +5,7 @@ _first_state =
   playlist: [] # Queue of url
   playing: no  # yes if music is playing
   index: -1    # Index of the playlist
+  paused: null # paused video
 
 radio = (state = _first_state, action) ->
 
@@ -18,7 +19,9 @@ radio = (state = _first_state, action) ->
 
     when C.PLAY then state.playing = yes
 
-    when C.PAUSE then state.playing = no
+    when C.PAUSE
+      state.paused  = state.playlist[state.index]
+      state.playing = no
 
     when C.NEXT
       state.index++

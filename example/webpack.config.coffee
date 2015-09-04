@@ -10,6 +10,6 @@ module.exports =
   module:
     loaders: [
       test: /\.coffee$/
-      loaders: ["regenerator", "coffee"]
+      loaders: ["regenerator", "coffee", "cjsx"]
       exclude: "node_modules"
     ]
