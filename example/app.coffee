@@ -2,15 +2,16 @@ React = require 'react'
 
 # Import dependencies for redux
 { reducer, actions } = require '../src/index'
-{ createStore, applyMiddleware, bindActionCreators } = require 'redux'
+{ createStore, applyMiddleware, bindActionCreators, compose } = require 'redux'
 
 thunk        = require 'redux-thunk'
 createLogger = require 'redux-logger'
+stayThere    = require 'redux-staythere'
 
 # Create the store
 logger = createLogger()
-createStoreWithMiddlewares = applyMiddleware(thunk, logger) createStore
-store = createStoreWithMiddlewares reducer
+finalCreateStore = compose(applyMiddleware(thunk, logger), stayThere()) createStore
+store = finalCreateStore reducer
 
 { Component, PropTypes: T } = React
 

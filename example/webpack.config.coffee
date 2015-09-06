@@ -17,3 +17,4 @@ module.exports =
       loaders: ["react-hot", "regenerator", "coffee", "cjsx"]
       exclude: "node_modules"
     ]
+  devtool: "eval-source-map"
