@@ -10,7 +10,7 @@ stayThere    = require 'redux-staythere'
 
 # Create the store
 logger = createLogger()
-finalCreateStore = compose(applyMiddleware(thunk, logger), stayThere()) createStore
+finalCreateStore = compose(applyMiddleware(thunk, logger), stayThere('1')) createStore
 store = finalCreateStore reducer
 
 { Component, PropTypes: T } = React
@@ -66,6 +66,7 @@ class Playlist extends Component
 
   @propTypes:
     state: T.object
+    deleteSong: T.func
 
   render: ->
     { state } = @props
@@ -73,14 +74,17 @@ class Playlist extends Component
       {
         if state.playlist.length is 0 then <i>No songs :'(</i>
         else
-          state.playlist.map (music, i) ->
+          state.playlist.map (music, i) =>
             if state.paused is music
               style = color: 'orange'
             else if state.playlist[state.index] is music and state.playing
               style = color: 'green'
             else
               style = color: 'black'
-            <li style={style} key={i}>{music}</li>
+            <li style={style} key={i}>
+              {music}
+              <button onClick={ => @props.deleteSong i }>delete</button>
+            </li>
       }
     </ul>
 
@@ -93,13 +97,13 @@ class App extends Component
 
   render: ->
     { playing, playlist, paused } = @props.state
-    { play, pause, stop, addSong } = @props.actions
+    { play, pause, stop, addSong, deleteSong } = @props.actions
     <div>
       <PlayButton playing={playing} pause={pause} play={play} />
       <StopButton stop={stop} />
       <br/>
       <PlaylistInput addSong={addSong} />
-      <Playlist state={@props.state} />
+      <Playlist state={@props.state} deleteSong={deleteSong} />
     </div>
 
 { Provider, connect } = require 'react-redux'

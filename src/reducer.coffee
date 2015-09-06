@@ -17,6 +17,9 @@ radio = (state = _first_state, action) ->
       state.playlist.push action.payload
       if state.index is -1 then state.index++
 
+    when C.DELETE_SONG
+      state.playlist.splice action.payload, 1
+
     when C.PLAY
       state.paused  = null
       state.playing = yes
@@ -32,7 +35,7 @@ radio = (state = _first_state, action) ->
     when C.NEXT
       state.index++
       if state.index == state.playlist.length
-        state.index = -1
+        state.index = 0
 
     when C.PREV
       if state.index > 0 then state.index--

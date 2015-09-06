@@ -13,3 +13,4 @@ module.exports =
       loaders: ["regenerator", "coffee"]
       exclude: "node_modules"
     ]
+  devtool: "eval-source-map"
