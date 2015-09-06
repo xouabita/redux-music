@@ -31,14 +31,6 @@ class PlayButton extends Component
     if @props.playing then @props.pause()
     else @props.play()
 
-class StopButton extends Component
-
-  @propTypes:
-    stop: T.func
-
-  render: ->
-    <button onClick={ @props.stop }>stop</button>
-
 class PlaylistInput extends Component
 
   @propTypes:
@@ -97,10 +89,15 @@ class App extends Component
 
   render: ->
     { playing, playlist, paused } = @props.state
-    { play, pause, stop, addSong, deleteSong } = @props.actions
+    {
+      play, pause, stop, addSong, deleteSong,
+      next, prev
+    } = @props.actions
     <div>
       <PlayButton playing={playing} pause={pause} play={play} />
-      <StopButton stop={stop} />
+      <button onClick={stop}>stop</button>
+      <button onClick={prev}><<</button>
+      <button onClick={next}>>></button>
       <br/>
       <PlaylistInput addSong={addSong} />
       <Playlist state={@props.state} deleteSong={deleteSong} />

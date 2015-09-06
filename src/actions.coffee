@@ -29,3 +29,15 @@ module.exports.deleteSong = deleteSong = (index) ->
   type: C.DELETE_SONG
   payload: index
 
+module.exports.next = next = -> (dispatch, getState) ->
+  console.log "hey"
+  {index: last_i, playlist, playing } = getState()
+  dispatch type: C.NEXT
+  { index } = getState()
+  if index is 0 then dispatch stop()
+  else dispatch play()
+
+module.exports.prev = prev = -> (dispatch, getState) ->
+  {index: last_i, playlist, playing} = getState()
+  dispatch type: C.PREV
+  dispatch play()
