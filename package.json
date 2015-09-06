@@ -19,6 +19,7 @@
     "react-redux": "^2.1.0",
     "redux": "^2.0.0",
     "redux-logger": "^1.0.6",
+    "redux-staythere": "^1.0.1",
     "redux-thunk": "^0.1.0",
     "regenerator": "^0.8.36",
     "regenerator-loader": "^2.0.0",
